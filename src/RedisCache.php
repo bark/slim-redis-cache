@@ -35,7 +35,11 @@ class RedisCache extends \Slim\Middleware
 	{
 		$app = $this->app;
 		$env = $app->environment;
-		$key = $env['SCRIPT_NAME'] . $env['PATH_INFO'];
+        if (array_key_exists('prefix', $this->settings)){
+            $key = $this->settings['prefix'] . $env['SCRIPT_NAME'] . $env['PATH_INFO'];
+        } else {
+            $key = $env['SCRIPT_NAME'] . $env['PATH_INFO'];
+        }
 		if (!empty($env['QUERY_STRING']))
 			$key .= '?' . $env['QUERY_STRING'];
 		$response = $app->response;
